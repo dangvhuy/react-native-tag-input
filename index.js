@@ -157,15 +157,7 @@ class TagInput<T> extends React.PureComponent<Props<T>, State> {
     }
   }
 
-  constructor(props: Props<T>) {
-    super(props);
-    this.state = {
-      inputWidth: props.inputDefaultWidth,
-      wrapperHeight: 36,
-    }
-  }
-
-  componentWillReceiveProps(nextProps: Props<T>) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const inputWidth = TagInput.inputWidth(
       nextProps.text,
       this.spaceLeft,
@@ -173,14 +165,22 @@ class TagInput<T> extends React.PureComponent<Props<T>, State> {
       this.wrapperWidth,
     );
     if (inputWidth !== this.state.inputWidth) {
-      this.setState({ inputWidth });
+      return {inputWidth};
     }
     const wrapperHeight = Math.min(
       nextProps.maxHeight,
       this.contentHeight,
     );
     if (wrapperHeight !== this.state.wrapperHeight) {
-      this.setState({ wrapperHeight });
+      return {wrapperHeight};
+    }
+  }
+
+  constructor(props: Props<T>) {
+    super(props);
+    this.state = {
+      inputWidth: props.inputDefaultWidth,
+      wrapperHeight: 36,
     }
   }
 
